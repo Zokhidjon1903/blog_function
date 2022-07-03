@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if category %}
+<h2> {{category.name}}ga tegishli bloglar </h2>
+{% elif tag %}
+<h2> {{tag.name}}ga tegishli bloglar </h2>
+{% else %}
+<h2> All Blogs </h2>
+{% endif %}
+
+{% for blog in blogs %}
+<div class="card" style="width: 100%;">
+    <div class="card-body">
+        <h5 class="card-title"><a href="{% url 'blog_detail' blog.slug %}">{{blog.title}}</a></h5>
+        {{blog.created_at|date:"d.m.Y / H:i"}}
+        <img src="{{ blog.image.url }}" style="width: 100%; height: 30rem;">
+        <p class="card-text">{{blog.content|truncatechars:"400"}}</p>
+
+        <div class="row">
+            <div class="col-lg-9">
+                <span class="for-user">
+                    {{ blog.user }}:
+                </span>
+                {% for tag in blog.tags.all %}
+                <span class="for-tags">
+                    {{ tag.name }}
+                </span>
+                {% endfor %}
+            </div>
+            <div class="col-lg-3">
+                <span class="for-views">
+                    Views: {{blog.views}}
+                </span>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+{% endfor %}
+<div style="text-align: center">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if blogs.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{blogs.previous_page_number}}"><<</a></li>
+            {% endif %}
+            {% for p in blogs.paginator.page_range %}
+            <li class="{%if p == blogs.number%}page-item active{%else%}page-item{%endif%}">
+                <a class="page-link" href="?page={{p}}">{{p}}</a>
+            </li>
+            {% endfor %}
+            {% if blogs.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{blogs.next_page_number}}">>></a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

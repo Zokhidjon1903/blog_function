@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<h2><span style="color:red">{{blog.title}}</span> blogini o'chirish </h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label class="form-label"> Title </label>
+        {% render_field form.title class="form-control" %}
+    </div>
+    <div class="mb-3">
+        <label class="form-label"> Content </label>
+        {% render_field form.content class="form-control" %}
+    </div>
+    <div class="mb-3">
+        <label class="form-label"> Image </label>
+        {% render_field form.image class="form-control" %}
+    </div>
+    <div class="mb-3">
+        <label class="form-label"> Category </label>
+        {% render_field form.category class="form-control" %}
+    </div>
+    <div class="mb-3">
+        <label class="form-label"> Tags </label>
+        {% render_field form.tags class="form-control" value=teglar %}
+    </div>
+    <div style="text-align: right">
+        <button type="submit" class="btn btn-danger">Delete Anyway</button>
+    </div>
+</form>
+
+{% endblock %}
